@@ -1,8 +1,20 @@
 # Data Validation  
 
+## Key SKills
+
+- Window Functions: Used **LAG( )** and **OVER( )** for MoM growth analysis.
+- Data Aggregation: Complex **GROUP BY** operations across temporal and categorical
+dimensions.
+- Conditional Logic: Implemented **CASE WHEN** statements for portfolio segmentation.
+
+
 ## SQL Highlights
 
 _KPI 1 : Total Loan Applications_
+
+Tracking the volume of loan requests and analyzing Month-over-Month (MoM) growth to monitor demand trends.
+To ensure the data accuracy, KPI requirements were calculated via elaborate steps by calculating Month-to-Date (MTD) and Previous-Month-to-Date (PMTD) and then MOM changes.
+
 ```sql
 	-- Total loan applications
 select COUNT(id) as total_loan_applications 
@@ -27,6 +39,9 @@ December = 279 / 4035 = 0.069144 or 6.9%
 
 ---
 _KPI 2 : Total Funded amount_
+
+Monitoring the total capital disbursed and the velocity of funding month-to-date.
+
 ```sql
 	-- total funded amount
 select SUM(loan_amount) Total_Funded_amount
@@ -51,6 +66,9 @@ December = 6226600 / 47754825 = 0.130387 or 13.0%
 
 ---
 _KPI 3 : Average DTI (Debt-to-Income)_
+
+DTI is a critical metric for assessing borrower capacity. A rising DTI can signal increased credit risk.
+
 ```sql
 	-- Average dti
 select Round(AVG(dti), 4) *100 avg_dti  FROM bank_loan_data;
@@ -74,6 +92,13 @@ December = 0.36 / 13.3 = 0.027067 or 2.7%
 
 ---
 _Loan Segmenting_
+
+- Segmenting the portfolio based on loan status to determine the health of the lending book.
+
+|Loan Category   | Loan Status         | Analysis     |
+|----------------|---------------------|----------------------|
+| Good Loan      | Fully Paid, Current | Low risk, Revenue generating |
+| Bad Loan       | Charged Off         | High risk, Capital Loss, requires attention for recovery and Risk mitigation |
 ```sql
 select 
 	CASE when loan_status IN ('Fully Paid', 'Current') then 'Good_loan' 
@@ -107,6 +132,9 @@ where loan_status IN('Fully Paid', 'Current');
 
 ---
 _Loan purpose analysis_
+
+Understanding why borrowers are taking loans helps in tailoring credit products.
+
 ```sql
 SELECT 
 	purpose,
@@ -122,6 +150,9 @@ ORDER BY COUNT(id) DESC;
 
 ---
 _Home Ownership analysis_
+
+Analyzing how housing status (Rent vs. Mortgage vs. Own) correlates with loan volume.
+
 ```sql
 -- Home Ownership analysis
 SELECT 
